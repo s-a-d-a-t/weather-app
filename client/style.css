@@ -644,6 +644,9 @@ body {
 @media (max-width: 992px) {
     .sidebar {
         transform: translateX(-100%);
+        width: 80%;
+        max-width: 300px;
+        padding: 20px 15px;
     }
     
     .main-content {
@@ -662,6 +665,22 @@ body {
     
     .weather-details {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .forecast-day {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .forecast-date, 
+    .forecast-icon, 
+    .forecast-temp, 
+    .forecast-description {
+        width: auto;
+        flex: 1;
+        text-align: center;
     }
 }
 
@@ -684,6 +703,11 @@ body {
         flex-direction: column;
         text-align: center;
     }
+    
+    .temperature::after {
+        position: static;
+        margin-left: 5px;
+    }
 }
 
 /* Toggle Button for Mobile */
@@ -699,7 +723,7 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 99;
+    z-index: 101; /* Above sidebar */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     display: none;
 }
@@ -716,9 +740,11 @@ body {
     
     .sidebar.active {
         transform: translateX(0);
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
     }
 }
-/* Add this to your style.css for the custom message box */
+
+/* Message box */
 .message-box {
     position: fixed;
     top: 50%;

@@ -16,13 +16,12 @@ const searchBtn = document.querySelector('.search-container button');
 const forecastContainer = document.getElementById('forecast-days-container');
 
 // API Configuration
-
 const API_KEY = '22cd422892aa79c6d89fa4f1b38e5766'; 
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
-const GEO_URL = 'https://api.openweathermap.org/geo/1.0/direct'; // For geocoding to get coordinates
-const ICON_URL = 'https://openweathermap.org/img/wn/'; // Not directly used for Font Awesome icons, but good to keep if you switch to image icons
+const GEO_URL = 'https://api.openweathermap.org/geo/1.0/direct';
+const ICON_URL = 'https://openweathermap.org/img/wn/';
 
-// Weather icons mapping (using Font Awesome classes)
+// Weather icons mapping
 const weatherIcons = {
     'clear': 'fas fa-sun',
     'clouds': 'fas fa-cloud',
@@ -61,14 +60,13 @@ function displayMessage(message) {
         document.body.removeChild(messageBox);
     });
 
-    // Optional: Auto-hide after a few seconds
+    // Auto-hide after a few seconds
     setTimeout(() => {
         if (document.body.contains(messageBox)) {
             document.body.removeChild(messageBox);
         }
     }, 5000);
 }
-
 
 // Initialize with current date
 function updateDate() {
@@ -79,13 +77,10 @@ function updateDate() {
 
 /**
  * Fetches weather data (current and forecast) for a given city.
- * First, it uses the Geocoding API to get coordinates, then uses those for weather.
- * @param {string} city The name of the city.
- * @returns {Promise<object|null>} An object containing current and forecast data, or null if an error occurs.
  */
 async function fetchWeatherData(city) {
     try {
-        // 1. Get coordinates for the city using Geocoding API
+        // Get coordinates for the city
         const geoResponse = await fetch(`${GEO_URL}?q=${city}&limit=1&appid=${API_KEY}`);
         const geoData = await geoResponse.json();
 
@@ -94,17 +89,15 @@ async function fetchWeatherData(city) {
             return null;
         }
 
-        const { lat, lon } = geoData[0]; // Get latitude and longitude
+        const { lat, lon } = geoData[0];
 
-        // 2. Fetch current weather using coordinates
+        // Fetch current weather
         const currentResponse = await fetch(
             `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
         );
         const currentData = await currentResponse.json();
         
-        // 3. Fetch 5-day / 3-hour forecast using coordinates
-        // OpenWeatherMap's 5-day forecast API provides data in 3-hour intervals.
-        // We'll filter this data to get daily forecasts later.
+        // Fetch forecast
         const forecastResponse = await fetch(
             `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
         );
@@ -123,7 +116,7 @@ async function fetchWeatherData(city) {
  * @param {string} city The name of the city.
  */
 async function updateWeather(city) {
-    // Show loading spinners/text
+    // Show loading states
     locationEl.textContent = 'Loading...';
     temperatureEl.textContent = '--';
     descriptionEl.textContent = 'Loading...';
@@ -132,6 +125,8 @@ async function updateWeather(city) {
     humidityEl.textContent = '--';
     pressureEl.textContent = '--';
     uvEl.textContent = '--';
+    
+    // Loading state for forecast
     forecastContainer.innerHTML = `
         <div class="forecast-day">
             <div class="forecast-date">Loading...</div>
@@ -165,16 +160,13 @@ async function updateWeather(city) {
         </div>
     `;
 
-
     const data = await fetchWeatherData(city);
     
     if (!data || data.current.cod !== 200) {
-        // Message already displayed by fetchWeatherData if city not found
-        // Reset to default or previous state if fetch failed
         locationEl.textContent = 'City Not Found';
         temperatureEl.textContent = '--';
         descriptionEl.textContent = 'N/A';
-        weatherIcon.className = 'fas fa-question-circle weather-icon'; // A generic error icon
+        weatherIcon.className = 'fas fa-question-circle weather-icon';
         windEl.textContent = '--';
         humidityEl.textContent = '--';
         pressureEl.textContent = '--';
@@ -188,7 +180,6 @@ async function updateWeather(city) {
     const geoInfo = data.geo;
     
     // Update current weather
-    // Use geoInfo.name for the city name, and geoInfo.country for the country code if available
     const displayLocation = geoInfo.name;
     const displayCountry = geoInfo.country ? `, ${geoInfo.country}` : '';
     locationEl.textContent = `${displayLocation}${displayCountry}`;
@@ -196,19 +187,15 @@ async function updateWeather(city) {
     temperatureEl.textContent = `${Math.round(current.main.temp)}°C`;
     descriptionEl.textContent = current.weather[0].description;
     
-    // Set weather icon based on OpenWeatherMap's main condition
+    // Set weather icon
     const condition = current.weather[0].main.toLowerCase();
-    const iconClass = weatherIcons[condition] || 'fas fa-cloud'; // Default to cloud if not found
+    const iconClass = weatherIcons[condition] || 'fas fa-cloud';
     weatherIcon.className = `${iconClass} weather-icon`;
     
     // Update details
-    windEl.textContent = `${Math.round(current.wind.speed * 3.6)} km/h`; // Convert m/s to km/h
+    windEl.textContent = `${Math.round(current.wind.speed * 3.6)} km/h`;
     humidityEl.textContent = `${current.main.humidity}%`;
     pressureEl.textContent = `${current.main.pressure} hPa`;
-    
-    // OpenWeatherMap's free API does not directly provide UV Index.
-    // You'd need a paid plan or a different API for this.
-    // For now, we'll keep it as '--' or implement a placeholder.
     uvEl.textContent = '--'; 
     
     // Update forecast
@@ -223,21 +210,19 @@ async function updateWeather(city) {
  * @param {object} forecastData The forecast data object from OpenWeatherMap.
  */
 function updateForecast(forecastData) {
-    forecastContainer.innerHTML = ''; // Clear previous forecast
+    forecastContainer.innerHTML = '';
 
-    // Group forecast by day (taking one entry per day, ideally around noon)
+    // Group forecast by day
     const dailyForecast = {};
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Normalize today's date to start of day
+    today.setHours(0, 0, 0, 0);
 
     forecastData.list.forEach(item => {
         const date = new Date(item.dt * 1000);
-        date.setHours(0, 0, 0, 0); // Normalize forecast item date to start of day
+        date.setHours(0, 0, 0, 0);
 
-        // Only consider future days, and pick one entry per day (e.g., around 12 PM or the first entry for the day)
-        if (date.getTime() > today.getTime()) { // Check if the forecast day is after today
+        if (date.getTime() > today.getTime()) {
             const dateStr = date.toDateString();
-            // If we don't have an entry for this day yet, or if this entry is closer to noon (12-15 UTC)
             if (!dailyForecast[dateStr] || (new Date(item.dt * 1000).getHours() >= 12 && new Date(item.dt * 1000).getHours() <= 15)) {
                 dailyForecast[dateStr] = item;
             }
@@ -245,7 +230,6 @@ function updateForecast(forecastData) {
     });
     
     // Get next 5 days
-    // Sort by date to ensure correct order
     const forecastDays = Object.values(dailyForecast).sort((a, b) => a.dt - b.dt).slice(0, 5);
     
     if (forecastDays.length === 0) {
@@ -260,7 +244,7 @@ function updateForecast(forecastData) {
         const monthDay = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         const temp = Math.round(day.main.temp);
         const condition = day.weather[0].main.toLowerCase();
-        const iconClass = weatherIcons[condition] || 'fas fa-cloud'; // Default to cloud if not found
+        const iconClass = weatherIcons[condition] || 'fas fa-cloud';
         const description = day.weather[0].description;
         
         const forecastDayEl = document.createElement('div');
@@ -278,10 +262,6 @@ function updateForecast(forecastData) {
 
 /**
  * Updates a specific city card in the sidebar.
- * @param {string} city The city name.
- * @param {number} temp The temperature.
- * @param {string} condition The weather condition description.
- * @param {string} iconClass The Font Awesome icon class.
  */
 function updateCityCard(city, temp, condition, iconClass) {
     const cityCard = document.querySelector(`.city-card[data-city="${city}"]`);
@@ -293,7 +273,7 @@ function updateCityCard(city, temp, condition, iconClass) {
         if (tempEl) tempEl.textContent = `${temp}°C`;
         if (conditionEl) conditionEl.textContent = condition;
         
-        if (iconEl) iconEl.className = iconClass; // Use the iconClass determined in updateWeather
+        if (iconEl) iconEl.className = iconClass;
     }
 }
 
@@ -314,6 +294,26 @@ function setActiveCity(city) {
 // Event Listeners
 menuToggle.addEventListener('click', () => {
     sidebar.classList.toggle('active');
+    const icon = menuToggle.querySelector('i');
+    if (sidebar.classList.contains('active')) {
+        icon.className = 'fas fa-times';
+    } else {
+        icon.className = 'fas fa-bars';
+    }
+});
+
+// Close sidebar when clicking outside
+document.addEventListener('click', (e) => {
+    const isMobile = window.innerWidth <= 992;
+    const isClickInsideSidebar = sidebar.contains(e.target);
+    const isClickOnToggle = menuToggle.contains(e.target);
+    
+    if (isMobile && sidebar.classList.contains('active') && 
+        !isClickInsideSidebar && !isClickOnToggle) {
+        sidebar.classList.remove('active');
+        const icon = menuToggle.querySelector('i');
+        icon.className = 'fas fa-bars';
+    }
 });
 
 cityCards.forEach(card => {
@@ -321,15 +321,21 @@ cityCards.forEach(card => {
         const city = card.dataset.city;
         setActiveCity(city);
         updateWeather(city);
+        // Close sidebar on mobile after selection
+        if (window.innerWidth <= 992) {
+            sidebar.classList.remove('active');
+            const icon = menuToggle.querySelector('i');
+            icon.className = 'fas fa-bars';
+        }
     });
 });
 
 searchBtn.addEventListener('click', () => {
     const city = searchInput.value.trim();
     if (city) {
-        setActiveCity(city); // Set active even for new cities
+        setActiveCity(city);
         updateWeather(city);
-        searchInput.value = ''; // Clear search input after search
+        searchInput.value = '';
     } else {
         displayMessage('Please enter a city name to search.');
     }
@@ -339,9 +345,9 @@ searchInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         const city = searchInput.value.trim();
         if (city) {
-            setActiveCity(city); // Set active even for new cities
+            setActiveCity(city);
             updateWeather(city);
-            searchInput.value = ''; // Clear search input after search
+            searchInput.value = '';
         } else {
             displayMessage('Please enter a city name to search.');
         }
@@ -350,8 +356,5 @@ searchInput.addEventListener('keypress', (e) => {
 
 // Initialize the app
 updateDate();
-// Set a default city to load weather for on initial page load
-// You can change 'Adama' to any city you prefer as the default.
 setActiveCity('Adama');
 updateWeather('Adama');
-
