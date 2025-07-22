@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sadat Amir's Weather Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- Weather Animation Background -->
+  <div class="weather-bg">
+    <div class="sun"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+  </div>
+
+  <div class="menu-toggle">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-container">
+      <div class="logo"><i class="fas fa-cloud-sun"></i></div>
+      <div class="logo-text">
+        <h1>Sadat's Weather</h1>
+        <p>TRACKING SYSTEM</p>
+      </div>
+    </div>
+
+    <h3 class="sidebar-title">Featured Cities</h3>
+    <div class="cities-container">
+      <!-- Add your cities here -->
+      <div class="city-card" data-city="Adama">
+        <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
+        <div class="city-info">
+          <div class="city-name">Adama, Ethiopia</div>
+          <div class="city-temp">--°C</div>
+          <div class="city-weather">Loading...</div>
+        </div>
+      </div>
+      <div class="city-card" data-city="Addis Ababa">
+        <div class="city-weather-icon"><i class="fas fa-cloud-sun"></i></div>
+        <div class="city-info">
+          <div class="city-name">Addis Ababa</div>
+          <div class="city-temp">--°C</div>
+          <div class="city-weather">Loading...</div>
+        </div>
+      </div>
+      <div class="city-card" data-city="Hawassa">
+        <div class="city-weather-icon"><i class="fas fa-cloud-rain"></i></div>
+        <div class="city-info">
+          <div class="city-name">Hawassa</div>
+          <div class="city-temp">--°C</div>
+          <div class="city-weather">Loading...</div>
+        </div>
+      </div>
+      <div class="city-card" data-city="Harar">
+        <div class="city-weather-icon"><i class="fas fa-cloud"></i></div>
+        <div class="city-info">
+          <div class="city-name">Harar</div>
+          <div class="city-temp">--°C</div>
+          <div class="city-weather">Loading...</div>
+        </div>
+      </div>
+      <div class="city-card" data-city="Debaso">
+        <div class="city-weather-icon"><i class="fas fa-cloud-showers-heavy"></i></div>
+        <div class="city-info">
+          <div class="city-name">Debaso</div>
+          <div class="city-temp">--°C</div>
+          <div class="city-weather">Loading...</div>
+        </div>
+      </div>
+      <div class="city-card" data-city="Chiro">
+        <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
+        <div class="city-info">
+          <div class="city-name">Chiro</div>
+          <div class="city-temp">--°C</div>
+          <div class="city-weather">Loading...</div>
+        </div>
+      </div>
+      <div class="city-card" data-city="Mesela">
+        <div class="city-weather-icon"><i class="fas fa-smog"></i></div>
+        <div class="city-info">
+          <div class="city-name">Mesela</div>
+          <div class="city-temp">--°C</div>
+          <div class="city-weather">Loading...</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sidebar-title">World Cities</h3>
+    <div class="cities-container">
+      <div class="city-card" data-city="New York">
+        <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
+        <div class="city-info">
+          <div class="city-name">New York</div>
+          <div class="city-temp">--°C</div>
+          <div class="city-weather">Loading...</div>
+        </div>
+      </div>
+      <div class="city-card" data-city="London">
+        <div class="city-weather-icon"><i class="fas fa-cloud-rain"></i></div>
+        <div class="city-info">
+          <div class="city-name">London</div>
+          <div class="city-temp">--°C</div>
+          <div class="city-weather">Loading...</div>
+        </div>
+      </div>
+      <div class="city-card" data-city="Tokyo">
+        <div class="city-weather-icon"><i class="fas fa-cloud"></i></div>
+        <div class="city-info">
+          <div class="city-name">Tokyo</div>
+          <div class="city-temp">--°C</div>
+          <div class="city-weather">Loading...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="header">
+      <div class="search-container">
+        <input type="text" placeholder="Search for a city..."/>
+        <button><i class="fas fa-search"></i></button>
+      </div>
+      <div class="user-info">
+        <div class="user-icon"><i class="fas fa-user"></i></div>
+        <div class="user-text">
+          <h3>Sadat Amir</h3>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard">
+      <div class="current-weather">
+        <div class="location-info">
+          <h1 class="location">Loading...</h1>
+          <p class="date">Loading...</p>
+        </div>
+        <div class="weather-main">
+          <div class="weather-icon-container">
+            <i class="fas fa-spinner fa-spin weather-icon"></i>
+            <div class="weather-description">Loading...</div>
+          </div>
+          <div class="temperature">--</div>
+        </div>
+
+        <div class="weather-details">
+          <div class="detail-card wind">
+            <i class="fas fa-wind"></i>
+            <div class="label">Wind Speed</div>
+            <div class="value">--</div>
+          </div>
+          <div class="detail-card humidity">
+            <i class="fas fa-tint"></i>
+            <div class="label">Humidity</div>
+            <div class="value">--</div>
+          </div>
+          <div class="detail-card pressure">
+            <i class="fas fa-compress-arrows-alt"></i>
+            <div class="label">Pressure</div>
+            <div class="value">--</div>
+          </div>
+          <div class="detail-card uv">
+            <i class="fas fa-sun"></i>
+            <div class="label">UV Index</div>
+            <div class="value">--</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="forecast">
+        <h2 class="section-title">5-Day Forecast</h2>
+        <div class="forecast-days" id="forecast-days-container">
+          <!-- JS will replace this -->
+        </div>
+      </div>
+
+      <div class="contribution">
+        <h2 class="section-title">Developer Information</h2>
+        <p>This weather tracking application was developed by Sadat Amir as a demonstration of frontend development skills.</p>
+
+        <div class="developer-info">
+          <div class="developer-icon"><i class="fas fa-code"></i></div>
+          <div class="developer-text">
+            <h3>Sadat Amir</h3>
+            <p><i class="fas fa-envelope"></i> sdrkk66@gmail.com</p>
+            <p><i class="fas fa-map-marker-alt"></i> Adama, Ethiopia</p>
+            <p><i class="fas fa-laptop-code"></i> Frontend Developer & UI Designer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
