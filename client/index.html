@@ -6,16 +6,11 @@
   <title>Sadat Amir's Weather Tracker</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Weather Animation Background -->
-  <div class="weather-bg">
-    <div class="sun"></div>
-    <div class="cloud"></div>
-    <div class="cloud"></div>
-    <div class="cloud"></div>
-  </div>
+  <!-- Particle Background -->
+  <div class="particles"></div>
 
   <div class="menu-toggle">
     <i class="fas fa-bars"></i>
@@ -33,7 +28,6 @@
 
     <h3 class="sidebar-title">Featured Cities</h3>
     <div class="cities-container">
-      <!-- Add your cities here -->
       <div class="city-card" data-city="Adama">
         <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
         <div class="city-info">
@@ -128,11 +122,18 @@
         <input type="text" placeholder="Search for a city..."/>
         <button><i class="fas fa-search"></i></button>
       </div>
+      
+      <!-- Current Date and Time Display -->
+      <div class="current-time">
+        <div class="current-date" id="current-date">Loading date...</div>
+        <div class="current-clock" id="current-clock">--:--:--</div>
+        <div class="current-timezone" id="current-timezone">Local Time</div>
+      </div>
+      
       <div class="user-info">
         <div class="user-icon"><i class="fas fa-user"></i></div>
         <div class="user-text">
           <h3>Sadat Amir</h3>
-          
         </div>
       </div>
     </div>

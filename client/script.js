@@ -1,4 +1,3 @@
-// DOM Elements
 const menuToggle = document.querySelector('.menu-toggle');
 const sidebar = document.querySelector('.sidebar');
 const cityCards = document.querySelectorAll('.city-card');
@@ -15,8 +14,13 @@ const searchInput = document.querySelector('.search-container input');
 const searchBtn = document.querySelector('.search-container button');
 const forecastContainer = document.getElementById('forecast-days-container');
 
+// New elements for date/time display
+const currentDateEl = document.getElementById('current-date');
+const currentClockEl = document.getElementById('current-clock');
+const currentTimezoneEl = document.getElementById('current-timezone');
+
 // API Configuration
-const API_KEY = '22cd422892aa79c6d89fa4f1b38e5766'; 
+const API_KEY = '22cd422892aa79c6d89fa4f1b38e5766';
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 const GEO_URL = 'https://api.openweathermap.org/geo/1.0/direct';
 const ICON_URL = 'https://openweathermap.org/img/wn/';
@@ -68,11 +72,31 @@ function displayMessage(message) {
     }, 5000);
 }
 
-// Initialize with current date
-function updateDate() {
+// Initialize with current date and time
+function updateDateTime() {
     const now = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    dateEl.textContent = now.toLocaleDateString('en-US', options);
+
+    // Format date: Weekday, Month Day, Year
+    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    currentDateEl.textContent = now.toLocaleDateString('en-US', dateOptions);
+
+    // Format time: HH:MM:SS AM/PM (12-hour format)
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // The hour '0' should be '12'
+    const formattedHours = String(hours).padStart(2, '0'); // Pad with leading zero if single digit
+
+    currentClockEl.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+
+    // Update the weather section date as well
+    dateEl.textContent = now.toLocaleDateString('en-US', dateOptions);
+
+    // Update timezone info
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    currentTimezoneEl.textContent = timezone;
 }
 
 /**
@@ -96,13 +120,13 @@ async function fetchWeatherData(city) {
             `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
         );
         const currentData = await currentResponse.json();
-        
+
         // Fetch forecast
         const forecastResponse = await fetch(
             `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
         );
         const forecastData = await forecastResponse.json();
-        
+
         return { current: currentData, forecast: forecastData, geo: geoData[0] };
     } catch (error) {
         console.error('Error fetching weather data:', error);
@@ -125,7 +149,7 @@ async function updateWeather(city) {
     humidityEl.textContent = '--';
     pressureEl.textContent = '--';
     uvEl.textContent = '--';
-    
+
     // Loading state for forecast
     forecastContainer.innerHTML = `
         <div class="forecast-day">
@@ -161,7 +185,7 @@ async function updateWeather(city) {
     `;
 
     const data = await fetchWeatherData(city);
-    
+
     if (!data || data.current.cod !== 200) {
         locationEl.textContent = 'City Not Found';
         temperatureEl.textContent = '--';
@@ -174,33 +198,33 @@ async function updateWeather(city) {
         forecastContainer.innerHTML = '<p style="text-align: center; opacity: 0.7;">Could not load forecast data.</p>';
         return;
     }
-    
+
     const current = data.current;
     const forecast = data.forecast;
     const geoInfo = data.geo;
-    
+
     // Update current weather
     const displayLocation = geoInfo.name;
     const displayCountry = geoInfo.country ? `, ${geoInfo.country}` : '';
     locationEl.textContent = `${displayLocation}${displayCountry}`;
-    
-    temperatureEl.textContent = `${Math.round(current.main.temp)}°C`;
+
+    temperatureEl.textContent = `${Math.round(current.main.temp)}`;
     descriptionEl.textContent = current.weather[0].description;
-    
+
     // Set weather icon
     const condition = current.weather[0].main.toLowerCase();
     const iconClass = weatherIcons[condition] || 'fas fa-cloud';
     weatherIcon.className = `${iconClass} weather-icon`;
-    
+
     // Update details
     windEl.textContent = `${Math.round(current.wind.speed * 3.6)} km/h`;
     humidityEl.textContent = `${current.main.humidity}%`;
     pressureEl.textContent = `${current.main.pressure} hPa`;
-    uvEl.textContent = '--'; 
-    
+    uvEl.textContent = '--';
+
     // Update forecast
     updateForecast(forecast);
-    
+
     // Update city cards in sidebar
     updateCityCard(city, Math.round(current.main.temp), current.weather[0].description, iconClass);
 }
@@ -228,10 +252,10 @@ function updateForecast(forecastData) {
             }
         }
     });
-    
+
     // Get next 5 days
     const forecastDays = Object.values(dailyForecast).sort((a, b) => a.dt - b.dt).slice(0, 5);
-    
+
     if (forecastDays.length === 0) {
         forecastContainer.innerHTML = '<p style="text-align: center; opacity: 0.7;">No forecast data available.</p>';
         return;
@@ -246,7 +270,7 @@ function updateForecast(forecastData) {
         const condition = day.weather[0].main.toLowerCase();
         const iconClass = weatherIcons[condition] || 'fas fa-cloud';
         const description = day.weather[0].description;
-        
+
         const forecastDayEl = document.createElement('div');
         forecastDayEl.className = 'forecast-day';
         forecastDayEl.innerHTML = `
@@ -255,7 +279,7 @@ function updateForecast(forecastData) {
             <div class="forecast-temp">${temp}°C</div>
             <div class="forecast-description">${description}</div>
         `;
-        
+
         forecastContainer.appendChild(forecastDayEl);
     });
 }
@@ -269,10 +293,10 @@ function updateCityCard(city, temp, condition, iconClass) {
         const tempEl = cityCard.querySelector('.city-temp');
         const conditionEl = cityCard.querySelector('.city-weather');
         const iconEl = cityCard.querySelector('.city-weather-icon i');
-        
+
         if (tempEl) tempEl.textContent = `${temp}°C`;
         if (conditionEl) conditionEl.textContent = condition;
-        
+
         if (iconEl) iconEl.className = iconClass;
     }
 }
@@ -307,8 +331,8 @@ document.addEventListener('click', (e) => {
     const isMobile = window.innerWidth <= 992;
     const isClickInsideSidebar = sidebar.contains(e.target);
     const isClickOnToggle = menuToggle.contains(e.target);
-    
-    if (isMobile && sidebar.classList.contains('active') && 
+
+    if (isMobile && sidebar.classList.contains('active') &&
         !isClickInsideSidebar && !isClickOnToggle) {
         sidebar.classList.remove('active');
         const icon = menuToggle.querySelector('i');
@@ -355,6 +379,9 @@ searchInput.addEventListener('keypress', (e) => {
 });
 
 // Initialize the app
-updateDate();
+updateDateTime();
 setActiveCity('Adama');
 updateWeather('Adama');
+
+// Update the time every second
+setInterval(updateDateTime, 1000);
