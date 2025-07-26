@@ -6,7 +6,8 @@
   <title>Sadat Amir's Weather Tracker</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css">
+  <!-- Link to external CSS file -->
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <!-- Particle Background -->
@@ -16,100 +17,120 @@
     <i class="fas fa-bars"></i>
   </div>
 
-  <!-- Sidebar -->
+  <!-- Redesigned Sidebar -->
   <div class="sidebar">
     <div class="logo-container">
       <div class="logo"><i class="fas fa-cloud-sun"></i></div>
       <div class="logo-text">
-        <h1>Sadat's Weather</h1>
+        <h1>SADAT'S WEATHER</h1>
         <p>TRACKING SYSTEM</p>
       </div>
     </div>
 
-    <h3 class="sidebar-title">Featured Cities</h3>
-    <div class="cities-container">
-      <div class="city-card" data-city="Adama">
-        <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
-        <div class="city-info">
-          <div class="city-name">Adama, Ethiopia</div>
-          <div class="city-temp">--°C</div>
-          <div class="city-weather">Loading...</div>
+    <div class="sidebar-section">
+      <h3 class="sidebar-title"><i class="fas fa-star"></i> Featured Cities</h3>
+      <div class="cities-container">
+        <div class="city-card" data-city="Adama">
+          <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
+          <div class="city-info">
+            <div class="city-name">Adama</div>
+            <div class="city-temp">--°C</div>
+            <div class="city-weather">Loading...</div>
+            <div class="city-country">Ethiopia</div>
+          </div>
         </div>
-      </div>
-      <div class="city-card" data-city="Addis Ababa">
-        <div class="city-weather-icon"><i class="fas fa-cloud-sun"></i></div>
-        <div class="city-info">
-          <div class="city-name">Addis Ababa</div>
-          <div class="city-temp">--°C</div>
-          <div class="city-weather">Loading...</div>
+        <div class="city-card" data-city="Addis Ababa">
+          <div class="city-weather-icon"><i class="fas fa-cloud-sun"></i></div>
+          <div class="city-info">
+            <div class="city-name">Addis Ababa</div>
+            <div class="city-temp">--°C</div>
+            <div class="city-weather">Loading...</div>
+            <div class="city-country">Ethiopia</div>
+          </div>
         </div>
-      </div>
-      <div class="city-card" data-city="Hawassa">
-        <div class="city-weather-icon"><i class="fas fa-cloud-rain"></i></div>
-        <div class="city-info">
-          <div class="city-name">Hawassa</div>
-          <div class="city-temp">--°C</div>
-          <div class="city-weather">Loading...</div>
+        <div class="city-card" data-city="Hawassa">
+          <div class="city-weather-icon"><i class="fas fa-cloud-rain"></i></div>
+          <div class="city-info">
+            <div class="city-name">Hawassa</div>
+            <div class="city-temp">--°C</div>
+            <div class="city-weather">Loading...</div>
+            <div class="city-country">Ethiopia</div>
+          </div>
         </div>
-      </div>
-      <div class="city-card" data-city="Harar">
-        <div class="city-weather-icon"><i class="fas fa-cloud"></i></div>
-        <div class="city-info">
-          <div class="city-name">Harar</div>
-          <div class="city-temp">--°C</div>
-          <div class="city-weather">Loading...</div>
-        </div>
-      </div>
-      <div class="city-card" data-city="Debaso">
-        <div class="city-weather-icon"><i class="fas fa-cloud-showers-heavy"></i></div>
-        <div class="city-info">
-          <div class="city-name">Debaso</div>
-          <div class="city-temp">--°C</div>
-          <div class="city-weather">Loading...</div>
-        </div>
-      </div>
-      <div class="city-card" data-city="Chiro">
-        <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
-        <div class="city-info">
-          <div class="city-name">Chiro</div>
-          <div class="city-temp">--°C</div>
-          <div class="city-weather">Loading...</div>
-        </div>
-      </div>
-      <div class="city-card" data-city="Mesela">
-        <div class="city-weather-icon"><i class="fas fa-smog"></i></div>
-        <div class="city-info">
-          <div class="city-name">Mesela</div>
-          <div class="city-temp">--°C</div>
-          <div class="city-weather">Loading...</div>
+        <div class="city-card" data-city="Harar">
+          <div class="city-weather-icon"><i class="fas fa-cloud"></i></div>
+          <div class="city-info">
+            <div class="city-name">Harar</div>
+            <div class="city-temp">--°C</div>
+            <div class="city-weather">Loading...</div>
+            <div class="city-country">Ethiopia</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <h3 class="sidebar-title">World Cities</h3>
-    <div class="cities-container">
-      <div class="city-card" data-city="New York">
-        <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
-        <div class="city-info">
-          <div class="city-name">New York</div>
-          <div class="city-temp">--°C</div>
-          <div class="city-weather">Loading...</div>
+    <div class="sidebar-section">
+      <h3 class="sidebar-title"><i class="fas fa-globe-africa"></i> Ethiopian Cities</h3>
+      <div class="cities-container">
+        <div class="city-card" data-city="Debaso">
+          <div class="city-weather-icon"><i class="fas fa-cloud-showers-heavy"></i></div>
+          <div class="city-info">
+            <div class="city-name">Debaso</div>
+            <div class="city-temp">--°C</div>
+            <div class="city-weather">Loading...</div>
+            <div class="city-country">Ethiopia</div>
+          </div>
+        </div>
+        <div class="city-card" data-city="Chiro">
+          <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
+          <div class="city-info">
+            <div class="city-name">Chiro</div>
+            <div class="city-temp">--°C</div>
+            <div class="city-weather">Loading...</div>
+            <div class="city-country">Ethiopia</div>
+          </div>
+        </div>
+        <div class="city-card" data-city="Mesela">
+          <div class="city-weather-icon"><i class="fas fa-smog"></i></div>
+          <div class="city-info">
+            <div class="city-name">Mesela</div>
+            <div class="city-temp">--°C</div>
+            <div class="city-weather">Loading...</div>
+            <div class="city-country">Ethiopia</div>
+          </div>
         </div>
       </div>
-      <div class="city-card" data-city="London">
-        <div class="city-weather-icon"><i class="fas fa-cloud-rain"></i></div>
-        <div class="city-info">
-          <div class="city-name">London</div>
-          <div class="city-temp">--°C</div>
-          <div class="city-weather">Loading...</div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3 class="sidebar-title"><i class="fas fa-globe-americas"></i> World Cities</h3>
+      <div class="cities-container">
+        <div class="city-card" data-city="New York">
+          <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
+          <div class="city-info">
+            <div class="city-name">New York</div>
+            <div class="city-temp">--°C</div>
+            <div class="city-weather">Loading...</div>
+            <div class="city-country">USA</div>
+          </div>
         </div>
-      </div>
-      <div class="city-card" data-city="Tokyo">
-        <div class="city-weather-icon"><i class="fas fa-cloud"></i></div>
-        <div class="city-info">
-          <div class="city-name">Tokyo</div>
-          <div class="city-temp">--°C</div>
-          <div class="city-weather">Loading...</div>
+        <div class="city-card" data-city="London">
+          <div class="city-weather-icon"><i class="fas fa-cloud-rain"></i></div>
+          <div class="city-info">
+            <div class="city-name">London</div>
+            <div class="city-temp">--°C</div>
+            <div class="city-weather">Loading...</div>
+            <div class="city-country">UK</div>
+          </div>
+        </div>
+        <div class="city-card" data-city="Tokyo">
+          <div class="city-weather-icon"><i class="fas fa-cloud"></i></div>
+          <div class="city-info">
+            <div class="city-name">Tokyo</div>
+            <div class="city-temp">--°C</div>
+            <div class="city-weather">Loading...</div>
+            <div class="city-country">Japan</div>
+          </div>
         </div>
       </div>
     </div>
@@ -200,6 +221,7 @@
     </div>
   </div>
 
+  <!-- Link to external JavaScript file -->
   <script src="script.js"></script>
 </body>
 </html>
