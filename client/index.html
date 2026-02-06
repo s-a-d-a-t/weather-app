@@ -3,32 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sadat Amir's Weather Tracker</title>
+  <title>Sadat Amir's Advanced Weather Tracker</title>
+  
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet"/>
-  <!-- Link to external CSS file -->
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+  
+  <!-- Leaflet.js for Interactive Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
+  <!-- Chart.js for Data Visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <!-- External CSS -->
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <!-- Particle Background -->
-  <div class="particles"></div>
-
-  <div class="menu-toggle">
+  <!-- Dynamic Weather Background Particles -->
+  <div class="weather-particles" id="weatherParticles"></div>
+  
+  <!-- Mobile Menu Toggle -->
+  <div class="menu-toggle" id="menuToggle">
     <i class="fas fa-bars"></i>
   </div>
 
-  <!-- Redesigned Sidebar -->
-  <div class="sidebar">
+  <!-- Enhanced Sidebar -->
+  <aside class="sidebar" id="sidebar">
     <div class="logo-container">
-      <div class="logo"><i class="fas fa-cloud-sun"></i></div>
+      <div class="logo">
+        <i class="fas fa-cloud-sun-rain"></i>
+      </div>
       <div class="logo-text">
-        <h1>SADAT'S WEATHER</h1>
-        <p>TRACKING SYSTEM</p>
+        <h1>WEATHER PRO</h1>
+        <p>Advanced Tracking</p>
       </div>
     </div>
 
+    <!-- Quick Stats -->
+    <div class="quick-stats">
+      <div class="stat-item">
+        <i class="fas fa-temperature-high"></i>
+        <div class="stat-info">
+          <span class="stat-label">Temperature</span>
+          <span class="stat-value" id="sidebarTemp">--°C</span>
+        </div>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-wind"></i>
+        <div class="stat-info">
+          <span class="stat-label">Wind</span>
+          <span class="stat-value" id="sidebarWind">-- km/h</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Cities -->
     <div class="sidebar-section">
-      <h3 class="sidebar-title"><i class="fas fa-star"></i> Featured Cities</h3>
+      <h3 class="sidebar-title">
+        <i class="fas fa-star"></i> Featured Cities
+      </h3>
       <div class="cities-container">
         <div class="city-card" data-city="Adama">
           <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
@@ -69,8 +105,11 @@
       </div>
     </div>
 
+    <!-- Ethiopian Cities -->
     <div class="sidebar-section">
-      <h3 class="sidebar-title"><i class="fas fa-globe-africa"></i> Ethiopian Cities</h3>
+      <h3 class="sidebar-title">
+        <i class="fas fa-globe-africa"></i> Ethiopian Cities
+      </h3>
       <div class="cities-container">
         <div class="city-card" data-city="Debaso">
           <div class="city-weather-icon"><i class="fas fa-cloud-showers-heavy"></i></div>
@@ -102,8 +141,11 @@
       </div>
     </div>
 
+    <!-- World Cities -->
     <div class="sidebar-section">
-      <h3 class="sidebar-title"><i class="fas fa-globe-americas"></i> World Cities</h3>
+      <h3 class="sidebar-title">
+        <i class="fas fa-globe-americas"></i> World Cities
+      </h3>
       <div class="cities-container">
         <div class="city-card" data-city="New York">
           <div class="city-weather-icon"><i class="fas fa-sun"></i></div>
@@ -134,94 +176,235 @@
         </div>
       </div>
     </div>
-  </div>
+  </aside>
 
   <!-- Main Content -->
-  <div class="main-content">
-    <div class="header">
+  <main class="main-content">
+    <!-- Header with Search -->
+    <header class="header">
       <div class="search-container">
-        <input type="text" placeholder="Search for a city..."/>
-        <button><i class="fas fa-search"></i></button>
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" placeholder="Search any city worldwide..." id="searchInput"/>
+        <button id="searchBtn"><i class="fas fa-arrow-right"></i></button>
       </div>
       
-      <!-- Current Date and Time Display -->
       <div class="current-time">
-        <div class="current-date" id="current-date">Loading date...</div>
-        <div class="current-clock" id="current-clock">--:--:--</div>
-        <div class="current-timezone" id="current-timezone">Local Time</div>
+        <div class="current-date" id="currentDate">Loading date...</div>
+        <div class="current-clock" id="currentClock">--:--:--</div>
+        <div class="current-timezone" id="currentTimezone">Local Time</div>
       </div>
       
       <div class="user-info">
-        <div class="user-icon"><i class="fas fa-user"></i></div>
+        <div class="user-icon"><i class="fas fa-user-astronaut"></i></div>
         <div class="user-text">
           <h3>Sadat Amir</h3>
+          <p>Weather Enthusiast</p>
         </div>
       </div>
+    </header>
+
+    <!-- Weather Alerts Banner -->
+    <div class="weather-alerts" id="weatherAlerts" style="display: none;">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span id="alertText">No active weather alerts</span>
     </div>
 
+    <!-- Dashboard Grid -->
     <div class="dashboard">
-      <div class="current-weather">
+      <!-- Current Weather Hero Section -->
+      <section class="current-weather">
         <div class="location-info">
-          <h1 class="location">Loading...</h1>
-          <p class="date">Loading...</p>
+          <h1 class="location" id="locationName">Loading...</h1>
+          <p class="date" id="weatherDate">Loading...</p>
         </div>
+        
         <div class="weather-main">
           <div class="weather-icon-container">
-            <i class="fas fa-spinner fa-spin weather-icon"></i>
-            <div class="weather-description">Loading...</div>
+            <i class="fas fa-spinner fa-spin weather-icon" id="weatherIcon"></i>
+            <div class="weather-description" id="weatherDescription">Loading...</div>
           </div>
-          <div class="temperature">--</div>
+          <div class="temperature" id="mainTemperature">--</div>
+          <div class="feels-like">Feels like <span id="feelsLike">--</span>°C</div>
         </div>
 
-        <div class="weather-details">
-          <div class="detail-card wind">
+        <div class="weather-details-grid">
+          <div class="detail-card">
             <i class="fas fa-wind"></i>
             <div class="label">Wind Speed</div>
-            <div class="value">--</div>
+            <div class="value" id="windSpeed">--</div>
           </div>
-          <div class="detail-card humidity">
+          <div class="detail-card">
             <i class="fas fa-tint"></i>
             <div class="label">Humidity</div>
-            <div class="value">--</div>
+            <div class="value" id="humidity">--</div>
           </div>
-          <div class="detail-card pressure">
+          <div class="detail-card">
             <i class="fas fa-compress-arrows-alt"></i>
             <div class="label">Pressure</div>
-            <div class="value">--</div>
+            <div class="value" id="pressure">--</div>
           </div>
-          <div class="detail-card uv">
-            <i class="fas fa-sun"></i>
-            <div class="label">UV Index</div>
-            <div class="value">--</div>
+          <div class="detail-card">
+            <i class="fas fa-eye"></i>
+            <div class="label">Visibility</div>
+            <div class="value" id="visibility">--</div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="forecast">
-        <h2 class="section-title">5-Day Forecast</h2>
-        <div class="forecast-days" id="forecast-days-container">
-          <!-- JS will replace this -->
+      <!-- Air Quality Index -->
+      <section class="air-quality">
+        <h2 class="section-title">
+          <i class="fas fa-lungs"></i> Air Quality Index
+        </h2>
+        <div class="aqi-container">
+          <div class="aqi-circle" id="aqiCircle">
+            <div class="aqi-value" id="aqiValue">--</div>
+            <div class="aqi-label" id="aqiLabel">Loading...</div>
+          </div>
+          <div class="aqi-details">
+            <div class="aqi-item">
+              <span class="aqi-component">PM2.5</span>
+              <span class="aqi-amount" id="pm25">--</span>
+            </div>
+            <div class="aqi-item">
+              <span class="aqi-component">PM10</span>
+              <span class="aqi-amount" id="pm10">--</span>
+            </div>
+            <div class="aqi-item">
+              <span class="aqi-component">O₃</span>
+              <span class="aqi-amount" id="o3">--</span>
+            </div>
+            <div class="aqi-item">
+              <span class="aqi-component">NO₂</span>
+              <span class="aqi-amount" id="no2">--</span>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div class="contribution">
-        <h2 class="section-title">Developer Information</h2>
-        <p>This weather tracking application was developed by Sadat Amir as a demonstration of frontend and backend development skills.</p>
+      <!-- Wind Compass -->
+      <section class="wind-compass">
+        <h2 class="section-title">
+          <i class="fas fa-compass"></i> Wind Direction
+        </h2>
+        <div class="compass-container">
+          <svg class="compass-svg" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="90" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+            <circle cx="100" cy="100" r="70" fill="transparent" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <circle cx="100" cy="100" r="50" fill="transparent" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            
+            <!-- Cardinal Directions -->
+            <text x="100" y="20" text-anchor="middle" fill="white" font-size="14" font-weight="bold">N</text>
+            <text x="180" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">E</text>
+            <text x="100" y="190" text-anchor="middle" fill="white" font-size="14" font-weight="bold">S</text>
+            <text x="20" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">W</text>
+            
+            <!-- Wind Arrow -->
+            <g id="windArrow" transform="rotate(0 100 100)">
+              <path d="M100,40 L110,80 L100,70 L90,80 Z" fill="#3a86ff" opacity="0.9"/>
+              <circle cx="100" cy="100" r="8" fill="#3a86ff"/>
+            </g>
+          </svg>
+          <div class="wind-info">
+            <div class="wind-degree" id="windDegree">--°</div>
+            <div class="wind-direction-text" id="windDirectionText">--</div>
+          </div>
+        </div>
+      </section>
 
+      <!-- UV Index -->
+      <section class="uv-index">
+        <h2 class="section-title">
+          <i class="fas fa-sun"></i> UV Index
+        </h2>
+        <div class="uv-container">
+          <div class="uv-gauge">
+            <div class="uv-progress" id="uvProgress"></div>
+          </div>
+          <div class="uv-value" id="uvValue">--</div>
+          <div class="uv-status" id="uvStatus">Loading...</div>
+          <div class="uv-recommendation" id="uvRecommendation">Calculating UV index...</div>
+        </div>
+      </section>
+
+      <!-- Sunrise & Sunset -->
+      <section class="sun-times">
+        <h2 class="section-title">
+          <i class="fas fa-sun"></i> Sun Schedule
+        </h2>
+        <div class="sun-timeline">
+          <div class="sun-item">
+            <i class="fas fa-sunrise"></i>
+            <div class="sun-label">Sunrise</div>
+            <div class="sun-time" id="sunriseTime">--:--</div>
+          </div>
+          <div class="sun-arc">
+            <div class="sun-position" id="sunPosition"></div>
+          </div>
+          <div class="sun-item">
+            <i class="fas fa-sunset"></i>
+            <div class="sun-label">Sunset</div>
+            <div class="sun-time" id="sunsetTime">--:--</div>
+          </div>
+        </div>
+        <div class="daylight-info">
+          <span>Daylight Duration: <strong id="daylightDuration">--</strong></span>
+        </div>
+      </section>
+
+      <!-- Hourly Forecast Chart -->
+      <section class="hourly-forecast">
+        <h2 class="section-title">
+          <i class="fas fa-clock"></i> 24-Hour Forecast
+        </h2>
+        <div class="chart-container">
+          <canvas id="hourlyChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Global Weather Map -->
+      <section class="global-map">
+        <h2 class="section-title">
+          <i class="fas fa-globe"></i> Global Weather Map
+        </h2>
+        <div id="weatherMap" class="map-container"></div>
+        <div class="map-controls">
+          <button class="map-btn" id="tempLayer"><i class="fas fa-temperature-high"></i> Temperature</button>
+          <button class="map-btn" id="cloudsLayer"><i class="fas fa-cloud"></i> Clouds</button>
+          <button class="map-btn" id="precipLayer"><i class="fas fa-cloud-rain"></i> Precipitation</button>
+        </div>
+      </section>
+
+      <!-- 5-Day Forecast -->
+      <section class="forecast">
+        <h2 class="section-title">
+          <i class="fas fa-calendar-alt"></i> 5-Day Forecast
+        </h2>
+        <div class="forecast-days" id="forecastDaysContainer">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Developer Info -->
+      <section class="contribution">
+        <h2 class="section-title">
+          <i class="fas fa-code"></i> Developer Information
+        </h2>
+        <p>This advanced weather tracking application was developed by Sadat Amir, featuring cutting-edge weather visualizations and data analytics.</p>
         <div class="developer-info">
-          <div class="developer-icon"><i class="fas fa-code"></i></div>
+          <div class="developer-icon"><i class="fas fa-laptop-code"></i></div>
           <div class="developer-text">
             <h3>Sadat Amir</h3>
             <p><i class="fas fa-envelope"></i> sdrkk66@gmail.com</p>
             <p><i class="fas fa-map-marker-alt"></i> Adama, Ethiopia</p>
-            <p><i class="fas fa-laptop-code"></i> Frontend Developer & UI Designer</p>
+            <p><i class="fas fa-briefcase"></i> Frontend Developer & UI Designer</p>
           </div>
         </div>
-      </div>
+      </section>
     </div>
-  </div>
+  </main>
 
-  <!-- Link to external JavaScript file -->
+  <!-- External JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>
