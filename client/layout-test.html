@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Layout Test</title>
+    <style>
+        body {
+            margin: 40px;
+            background: #0f0c29;
+            color: white;
+            font-family: Arial;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #3a86ff;
+            padding: 30px;
+            border-radius: 15px;
+            min-height: 200px;
+        }
+
+        .span-6 {
+            grid-column: span 6;
+        }
+
+        .span-12 {
+            grid-column: span 12;
+        }
+
+        .label {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .details {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Grid Layout Test - 50/50 Split</h1>
+    <div class="dashboard">
+        <!-- Row 1: Air Quality + Wind Direction -->
+        <div class="box span-6">
+            <div class="label">Air Quality (span 6)</div>
+            <div class="details">Should take 50% width</div>
+        </div>
+        <div class="box span-6">
+            <div class="label">Wind Direction (span 6)</div>
+            <div class="details">Should take 50% width</div>
+        </div>
+
+        <!-- Row 2: UV-Sun Container -->
+        <div class="box span-12" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px;">
+                <div class="label">UV Index (1fr)</div>
+                <div class="details">Should take 50% of container</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px;">
+                <div class="label">Sun Schedule (1fr)</div>
+                <div class="details">Should take 50% of container</div>
+            </div>
+        </div>
+    </div>
+
+    <p style="margin-top: 30px;">If you see Air Quality and Wind Direction side-by-side taking equal space, and UV Index
+        + Sun Schedule side-by-side below them, the CSS grid is working correctly!</p>
+</body>
+
+</html>

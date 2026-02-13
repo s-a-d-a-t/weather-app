@@ -1,34 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sadat Amir's Advanced Weather Tracker</title>
-  
+
   <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;900&display=swap"
+    rel="stylesheet" />
+
   <!-- Leaflet.js for Interactive Maps -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  
+
   <!-- Chart.js for Data Visualization -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  
+
   <!-- External CSS -->
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <!-- Dynamic Weather Background Particles -->
   <div class="weather-particles" id="weatherParticles"></div>
-  
+
   <!-- Mobile Menu Toggle -->
   <div class="menu-toggle" id="menuToggle">
     <i class="fas fa-bars"></i>
   </div>
+
+  <!-- Floating Sidebar Toggle (Desktop/Collapsed State) -->
+  <button id="floatingToggleBtn" class="floating-toggle-btn">
+    <i class="fas fa-chevron-right"></i>
+  </button>
 
   <!-- Enhanced Sidebar -->
   <aside class="sidebar" id="sidebar">
@@ -40,6 +49,9 @@
         <h1>WEATHER PRO</h1>
         <p>Advanced Tracking</p>
       </div>
+      <button id="sidebarCollapseBtn" class="sidebar-collapse-btn">
+        <i class="fas fa-chevron-left"></i>
+      </button>
     </div>
 
     <!-- Quick Stats -->
@@ -184,16 +196,16 @@
     <header class="header">
       <div class="search-container">
         <i class="fas fa-search search-icon"></i>
-        <input type="text" placeholder="Search any city worldwide..." id="searchInput"/>
+        <input type="text" placeholder="Search any city worldwide..." id="searchInput" />
         <button id="searchBtn"><i class="fas fa-arrow-right"></i></button>
       </div>
-      
+
       <div class="current-time">
         <div class="current-date" id="currentDate">Loading date...</div>
         <div class="current-clock" id="currentClock">--:--:--</div>
         <div class="current-timezone" id="currentTimezone">Local Time</div>
       </div>
-      
+
       <div class="user-info">
         <div class="user-icon"><i class="fas fa-user-astronaut"></i></div>
         <div class="user-text">
@@ -217,7 +229,7 @@
           <h1 class="location" id="locationName">Loading...</h1>
           <p class="date" id="weatherDate">Loading...</p>
         </div>
-        
+
         <div class="weather-main">
           <div class="weather-icon-container">
             <i class="fas fa-spinner fa-spin weather-icon" id="weatherIcon"></i>
@@ -251,61 +263,124 @@
         </div>
       </section>
 
-      <!-- Air Quality Index -->
+      <!-- Air Quality - Compact Modern Design -->
       <section class="air-quality">
         <h2 class="section-title">
-          <i class="fas fa-lungs"></i> Air Quality Index
+          <i class="fas fa-wind"></i> Air Quality
         </h2>
-        <div class="aqi-container">
-          <div class="aqi-circle" id="aqiCircle">
-            <div class="aqi-value" id="aqiValue">--</div>
-            <div class="aqi-label" id="aqiLabel">Loading...</div>
+        <div class="aqi-modern-container">
+          <div class="aqi-badge" id="aqiBadge">
+            <div class="aqi-badge-content">
+              <span class="aqi-value-modern" id="aqiValue">--</span>
+              <span class="aqi-label-modern" id="aqiLabel">Loading...</span>
+            </div>
           </div>
-          <div class="aqi-details">
-            <div class="aqi-item">
-              <span class="aqi-component">PM2.5</span>
-              <span class="aqi-amount" id="pm25">--</span>
+          <div class="aqi-components-compact">
+            <div class="aqi-component-item">
+              <span class="component-name">PM2.5</span>
+              <div class="component-bar">
+                <div class="component-fill" id="pm25Bar"></div>
+              </div>
+              <span class="component-value" id="pm25">--</span>
             </div>
-            <div class="aqi-item">
-              <span class="aqi-component">PM10</span>
-              <span class="aqi-amount" id="pm10">--</span>
+            <div class="aqi-component-item">
+              <span class="component-name">PM10</span>
+              <div class="component-bar">
+                <div class="component-fill" id="pm10Bar"></div>
+              </div>
+              <span class="component-value" id="pm10">--</span>
             </div>
-            <div class="aqi-item">
-              <span class="aqi-component">O₃</span>
-              <span class="aqi-amount" id="o3">--</span>
+            <div class="aqi-component-item">
+              <span class="component-name">O₃</span>
+              <div class="component-bar">
+                <div class="component-fill" id="o3Bar"></div>
+              </div>
+              <span class="component-value" id="o3">--</span>
             </div>
-            <div class="aqi-item">
-              <span class="aqi-component">NO₂</span>
-              <span class="aqi-amount" id="no2">--</span>
+            <div class="aqi-component-item">
+              <span class="component-name">NO₂</span>
+              <div class="component-bar">
+                <div class="component-fill" id="no2Bar"></div>
+              </div>
+              <span class="component-value" id="no2">--</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Wind Compass -->
+      <!-- Wind Compass - Enhanced -->
       <section class="wind-compass">
         <h2 class="section-title">
-          <i class="fas fa-compass"></i> Wind Direction
+          <i class="fas fa-wind"></i> Wind Direction
         </h2>
         <div class="compass-container">
-          <svg class="compass-svg" viewBox="0 0 200 200">
-            <circle cx="100" cy="100" r="90" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
-            <circle cx="100" cy="100" r="70" fill="transparent" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-            <circle cx="100" cy="100" r="50" fill="transparent" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-            
-            <!-- Cardinal Directions -->
-            <text x="100" y="20" text-anchor="middle" fill="white" font-size="14" font-weight="bold">N</text>
-            <text x="180" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">E</text>
-            <text x="100" y="190" text-anchor="middle" fill="white" font-size="14" font-weight="bold">S</text>
-            <text x="20" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">W</text>
-            
-            <!-- Wind Arrow -->
-            <g id="windArrow" transform="rotate(0 100 100)">
-              <path d="M100,40 L110,80 L100,70 L90,80 Z" fill="#3a86ff" opacity="0.9"/>
-              <circle cx="100" cy="100" r="8" fill="#3a86ff"/>
+          <!-- Animated Wind Particles -->
+          <div class="wind-particles" id="windParticles"></div>
+
+          <svg class="compass-svg" viewBox="0 0 240 240">
+            <!-- Outer glow rings -->
+            <defs>
+              <radialGradient id="compassGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style="stop-color:#3a86ff;stop-opacity:0.3" />
+                <stop offset="100%" style="stop-color:#3a86ff;stop-opacity:0" />
+              </radialGradient>
+              <filter id="windGlow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <circle cx="120" cy="120" r="110" fill="url(#compassGlow)" />
+            <circle cx="120" cy="120" r="95" fill="rgba(255,255,255,0.03)" stroke="rgba(58,134,255,0.3)"
+              stroke-width="2" />
+            <circle cx="120" cy="120" r="75" fill="transparent" stroke="rgba(255,255,255,0.1)" stroke-width="1"
+              stroke-dasharray="4,4" />
+            <circle cx="120" cy="120" r="55" fill="transparent" stroke="rgba(255,255,255,0.1)" stroke-width="1"
+              stroke-dasharray="4,4" />
+
+            <!-- Cardinal Directions with enhanced styling -->
+            <text x="120" y="25" text-anchor="middle" fill="#3a86ff" font-size="16" font-weight="bold"
+              font-family="Orbitron">N</text>
+            <text x="205" y="125" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="14"
+              font-weight="bold">E</text>
+            <text x="120" y="215" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="14"
+              font-weight="bold">S</text>
+            <text x="35" y="125" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="14"
+              font-weight="bold">W</text>
+
+            <!-- Intercardinal Directions -->
+            <text x="170" y="50" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="11">NE</text>
+            <text x="190" y="170" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="11">SE</text>
+            <text x="70" y="190" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="11">SW</text>
+            <text x="50" y="70" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="11">NW</text>
+
+            <!-- Animated Wind Arrow with trail effect -->
+            <g id="windArrow" transform="rotate(0 120 120)" filter="url(#windGlow)">
+              <!-- Arrow trail -->
+              <path d="M120,45 L125,90 L120,85 L115,90 Z" fill="#3a86ff" opacity="0.3" />
+              <path d="M120,50 L123,95 L120,90 L117,95 Z" fill="#4cc9f0" opacity="0.5" />
+              <!-- Main arrow -->
+              <path d="M120,35 L132,95 L120,85 L108,95 Z" fill="url(#arrowGradient)" />
+              <circle cx="120" cy="120" r="12" fill="#3a86ff" stroke="#4cc9f0" stroke-width="2" />
+              <circle cx="120" cy="120" r="6" fill="#4cc9f0" />
             </g>
+
+            <defs>
+              <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#4cc9f0;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#3a86ff;stop-opacity:1" />
+              </linearGradient>
+            </defs>
           </svg>
-          <div class="wind-info">
+
+          <div class="wind-info-enhanced">
+            <div class="wind-speed-display">
+              <i class="fas fa-wind"></i>
+              <span id="windSpeedCompass">-- km/h</span>
+            </div>
             <div class="wind-degree" id="windDegree">--°</div>
             <div class="wind-direction-text" id="windDirectionText">--</div>
           </div>
@@ -318,37 +393,106 @@
           <i class="fas fa-sun"></i> UV Index
         </h2>
         <div class="uv-container">
-          <div class="uv-gauge">
-            <div class="uv-progress" id="uvProgress"></div>
+          <div class="uv-circular">
+            <svg class="uv-ring" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="10" />
+              <circle id="uvCircle" cx="60" cy="60" r="50" fill="none" stroke="url(#uvGradient)" stroke-width="10"
+                stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round" transform="rotate(-90 60 60)" />
+              <defs>
+                <linearGradient id="uvGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#00e400" />
+                  <stop offset="25%" style="stop-color:#ffff00" />
+                  <stop offset="50%" style="stop-color:#ff7e00" />
+                  <stop offset="75%" style="stop-color:#ff0000" />
+                  <stop offset="100%" style="stop-color:#8f3f97" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="uv-value" id="uvValue">--</div>
           </div>
-          <div class="uv-value" id="uvValue">--</div>
           <div class="uv-status" id="uvStatus">Loading...</div>
           <div class="uv-recommendation" id="uvRecommendation">Calculating UV index...</div>
         </div>
       </section>
 
-      <!-- Sunrise & Sunset -->
+      <!-- Sun Schedule -->
       <section class="sun-times">
         <h2 class="section-title">
-          <i class="fas fa-sun"></i> Sun Schedule
+          <i class="fas fa-clock"></i> Sun Schedule
         </h2>
-        <div class="sun-timeline">
-          <div class="sun-item">
-            <i class="fas fa-sunrise"></i>
-            <div class="sun-label">Sunrise</div>
-            <div class="sun-time" id="sunriseTime">--:--</div>
+        <div class="sun-visual">
+          <svg class="sun-arc-svg" viewBox="0 0 280 160">
+            <!-- Sky gradient background -->
+            <defs>
+              <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#4facfe;stop-opacity:0.2" />
+                <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:0.05" />
+              </linearGradient>
+            </defs>
+
+            <rect x="0" y="80" width="280" height="80" fill="url(#skyGradient)" />
+
+            <!-- Horizon line -->
+            <line x1="20" y1="140" x2="260" y2="140" stroke="rgba(255,255,255,0.2)" stroke-width="2"
+              stroke-dasharray="5,5" />
+
+            <!-- Sun path arc -->
+            <path id="sunPath" d="M 40 140 Q 140 40, 240 140" stroke="rgba(255, 214, 10, 0.3)" stroke-width="2"
+              fill="none" stroke-dasharray="5,3" />
+
+            <!-- Animated sun -->
+            <g id="animatedSun">
+              <circle r="16" fill="url(#sunGradient)" filter="url(#sunGlow)" />
+              <circle r="12" fill="#ffd60a" opacity="0.9" />
+              <!-- Sun rays -->
+              <g id="sunRays" opacity="0.7">
+                <line x1="0" y1="-20" x2="0" y2="-28" stroke="#ffd60a" stroke-width="2" stroke-linecap="round" />
+                <line x1="0" y1="20" x2="0" y2="28" stroke="#ffd60a" stroke-width="2" stroke-linecap="round" />
+                <line x1="-20" y1="0" x2="-28" y2="0" stroke="#ffd60a" stroke-width="2" stroke-linecap="round" />
+                <line x1="20" y1="0" x2="28" y2="0" stroke="#ffd60a" stroke-width="2" stroke-linecap="round" />
+                <line x1="-14" y1="-14" x2="-20" y2="-20" stroke="#ffd60a" stroke-width="2" stroke-linecap="round" />
+                <line x1="14" y1="-14" x2="20" y2="-20" stroke="#ffd60a" stroke-width="2" stroke-linecap="round" />
+                <line x1="-14" y1="14" x2="-20" y2="20" stroke="#ffd60a" stroke-width="2" stroke-linecap="round" />
+                <line x1="14" y1="14" x2="20" y2="20" stroke="#ffd60a" stroke-width="2" stroke-linecap="round" />
+              </g>
+            </g>
+
+            <defs>
+              <radialGradient id="sunGradient">
+                <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#ffd60a;stop-opacity:1" />
+              </radialGradient>
+              <filter id="sunGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+          </svg>
+
+          <div class="sun-info-grid">
+            <div class="sun-info-item">
+              <i class="fas fa-sunrise"></i>
+              <div class="sun-info-content">
+                <div class="sun-label">Sunrise</div>
+                <div class="sun-time" id="sunriseTime">--:--</div>
+              </div>
+            </div>
+            <div class="sun-info-item">
+              <i class="fas fa-sunset"></i>
+              <div class="sun-info-content">
+                <div class="sun-label">Sunset</div>
+                <div class="sun-time" id="sunsetTime">--:--</div>
+              </div>
+            </div>
           </div>
-          <div class="sun-arc">
-            <div class="sun-position" id="sunPosition"></div>
+
+          <div class="daylight-info">
+            <i class="fas fa-clock"></i>
+            <span>Daylight: <strong id="daylightDuration">--</strong></span>
           </div>
-          <div class="sun-item">
-            <i class="fas fa-sunset"></i>
-            <div class="sun-label">Sunset</div>
-            <div class="sun-time" id="sunsetTime">--:--</div>
-          </div>
-        </div>
-        <div class="daylight-info">
-          <span>Daylight Duration: <strong id="daylightDuration">--</strong></span>
         </div>
       </section>
 
@@ -390,7 +534,8 @@
         <h2 class="section-title">
           <i class="fas fa-code"></i> Developer Information
         </h2>
-        <p>This advanced weather tracking application was developed by Sadat Amir, featuring cutting-edge weather visualizations and data analytics.</p>
+        <p>This advanced weather tracking application was developed by Sadat Amir, featuring cutting-edge weather
+          visualizations and data analytics.</p>
         <div class="developer-info">
           <div class="developer-icon"><i class="fas fa-laptop-code"></i></div>
           <div class="developer-text">
@@ -407,4 +552,5 @@
   <!-- External JavaScript -->
   <script src="script.js"></script>
 </body>
+
 </html>
